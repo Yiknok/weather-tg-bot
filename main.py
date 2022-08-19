@@ -14,6 +14,7 @@ def parser(url):
     return [c.text for c in temperature]
 
 
+
 bot = telebot.TeleBot(token)
 
 
@@ -27,11 +28,10 @@ def weather_today(message):
     clear_text = parser(URL)
     bot.send_message(message.chat.id, f'today in Kyiv:{clear_text[0]}')
 
-@bot.message_handler(commands=['notifi'])
-def notification(message):
-    schedule.every().day.at('06:30').do(weather_today, message)
-
 
 bot.polling()
 
 schedule.every().day.at('06:00').do(parser, URL)
+while True:
+    schedule.run_pending()
+
